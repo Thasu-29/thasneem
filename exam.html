@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chitchat Login</title>
+    <!-- FontAwesome for Social Icons -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #ebf5ff;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(220, 235, 255, 0.8) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(220, 235, 255, 0.8) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.5) 0%, transparent 60%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background Decorative Circles */
+        .bg-circle {
+            position: absolute;
+            border: 2px solid rgba(0, 122, 255, 0.15);
+            border-radius: 50%;
+        }
+        .bg-circle-1 { width: 20px; height: 20px; top: 10%; left: 10%; }
+        .bg-circle-2 { width: 16px; height: 16px; bottom: 15%; left: 5%; }
+        .bg-circle-3 { width: 24px; height: 24px; top: 40%; right: 20%; }
+        .bg-circle-4 { width: 14px; height: 14px; bottom: 10%; right: 15%; }
+
+        .container {
+            display: flex;
+            align-items: center;
+            position: relative;
+            max-width: 750px;
+            width: 100%;
+        }
+
+        /* Sidebar Social Buttons */
+        .social-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-right: -18px;
+            z-index: 10;
+        }
+
+        .social-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .social-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .facebook { background-color: #3b5998; }
+        .google { background-color: #ea4335; }
+        .twitter { background-color: #1da1f2; }
+
+        /* Main Login Card */
+        .login-card {
+            background: white;
+            padding: 50px 60px;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        /* Logo Styling */
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            border-radius: 50% 50% 50% 0;
+            position: relative;
+        }
+
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 12px;
+            background: white;
+            border-radius: 10px;
+            top: 11px;
+            left: 11px;
+            opacity: 0.3;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            letter-spacing: 0.5px;
+        }
+
+        /* Headings */
+        h2 {
+            color: #1a2a3a;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 13px;
+            margin-bottom: 35px;
+        }
+
+        /* Form Inputs */
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #4a5568;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #3182ce;
+        }
+
+        /* Options Row */
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            margin-bottom: 30px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #4a5568;
+            cursor: pointer;
+        }
+
+        .forgot-password {
+            color: #7f8c8d;
+            text-decoration: none;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            background-color: #2b96efff;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(43, 150, 239, 0.3);
+            transition: background-color 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #1a85e0;
+        }
+
+        /* Responsive Tweaks */
+        @media (max-width: 480px) {
+            .container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .social-sidebar {
+                flex-direction: row;
+                margin-right: 0;
+                margin-bottom: -10px;
+            }
+            .login-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Decorative background elements matching the template -->
+    <div class="bg-circle bg-circle-1"></div>
+    <div class="bg-circle bg-circle-2"></div>
+    <div class="bg-circle bg-circle-3"></div>
+    <div class="bg-circle bg-circle-4"></div>
+
+    <div class="container">
+        <!-- Floating Social Actions -->
+        <div class="social-sidebar">
+            <a href="#" class="social-btn facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-btn google"><i class="fab fa-google"></i></a>
+            <a href="#" class="social-btn twitter"><i class="fab fa-twitter"></i></a>
+        </div>
+
+        <!-- Login Container Box -->
+        <div class="login-card">
+            
+            <div class="logo-container">
+                <div class="logo-icon"></div>
+                <div class="logo-text">CHITCHAT</div>
+            </div>
+
+            <h2>Hello Everyone , We are Chitchat</h2>
+            <p class="subtitle">Wellcome to chitchat please, login to your account.</p>
+
+            <!-- Form Framework (Added ID here) -->
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" value="25pcs@123gmail.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="rememberMe"> Remember Me.
+                    </label>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="submit-btn">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- API Script Logic -->
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+            // 1. Prevent page reload on submit
+            event.preventDefault();
+
+            // 2. Extract values from input fields
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+
+            // 3. Define your backend API URL endpoint
+            const apiEndpoint = 'http://localhost:3000/api/login'; 
+
+            try {
+                // 4. Send the POST request using fetch
+                const response = await fetch(apiEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password,
+                        remember: rememberMe
+                    })
+                });
+
+                const data = await response.json();
+
+                // 5. Process backend validation rules
+                if (response.ok) {
+                    alert('Login successful!');
+                    // Redirect to your product dashboard page or store session data
+                    // window.location.href = '/products.html'; 
+                } else {
+                    // Gracefully display server validation errors (Scenario 3 Step 5 setup)
+                    alert('Login failed: ' + (data.message || 'Invalid parameters provided.'));
+                }
+
+            } catch (error) {
